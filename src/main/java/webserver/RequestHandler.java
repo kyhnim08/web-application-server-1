@@ -65,10 +65,6 @@ public class RequestHandler extends Thread {
 			if(url.startsWith("/user/create")){
 				
 				String requestBody = IOUtils.readData(br,  Integer.parseInt(headers.get("Content-Length")));
-			//	int index = url.indexOf("?"); 
-			//	String requestPath = url.substring(0, index);
-			//	String queryString = url.substring(index+1);
-				
 				log.debug("Request Body {}", requestBody);
 				Map<String, String>params = HttpRequestUtils.parseQueryString(requestBody);
 				User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
@@ -77,10 +73,19 @@ public class RequestHandler extends Thread {
 				//url= "/index.html";
 				DataOutputStream dos = new DataOutputStream(out);
 				response302Header(dos);
-		
 				
+			}else if(url.equals("/user/login")){
+		    	String requestBody= IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));		
+		    	log.debug("Request Body {}", requestBody);
+				Map<String, String>params = HttpRequestUtils.parseQueryString(requestBody);
+				log.debug("userId : {}, password :{}", params.get("userId"), params.get("password"));
+				 
+				DataOutputStream dos = new DataOutputStream(out);
+				log.debug("1111111111");
+				response302Header(dos);
+				 
 			}else{
-				
+				log.debug(">>>>>>>>>>>");
 				DataOutputStream dos = new DataOutputStream(out);
 				byte[] body = Files.readAllBytes(new File("./webapp"+url).toPath());
 				response200Header(dos, body.length);
@@ -88,10 +93,6 @@ public class RequestHandler extends Thread {
 				
 			}
 			
-			//byte[] body = "Hello World".getBytes();
-			//byte[] body = Files.readAllBytes(new File("./webapp"+url).toPath());
-			//response302Header(dos, body.length);
-			//responseBody(dos, body);
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
@@ -100,9 +101,8 @@ public class RequestHandler extends Thread {
 	private void response302Header(DataOutputStream dos) {
 		try {
 			dos.writeBytes("HTTP/1.1 302 Found\r\n");
-			dos.writeBytes("Location: http://localhost:8080/index.html\r\n");
+			dos.writeBytes("Location: /index.html\r\n");
 			dos.writeBytes("\r\n");
-			
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
@@ -128,4 +128,5 @@ public class RequestHandler extends Thread {
 			log.error(e.getMessage());
 		}
 	}
+	
 }
