@@ -73,19 +73,15 @@ public class RequestHandler extends Thread {
 				//url= "/index.html";
 				DataOutputStream dos = new DataOutputStream(out);
 				response302Header(dos);
-				
+			
 			}else if(url.equals("/user/login")){
 		    	String requestBody= IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));		
 		    	log.debug("Request Body {}", requestBody);
 				Map<String, String>params = HttpRequestUtils.parseQueryString(requestBody);
-				log.debug("userId : {}, password :{}", params.get("userId"), params.get("password"));
-				 
 				DataOutputStream dos = new DataOutputStream(out);
-				log.debug("1111111111");
 				response302Header(dos);
 				 
 			}else{
-				log.debug(">>>>>>>>>>>");
 				DataOutputStream dos = new DataOutputStream(out);
 				byte[] body = Files.readAllBytes(new File("./webapp"+url).toPath());
 				response200Header(dos, body.length);
