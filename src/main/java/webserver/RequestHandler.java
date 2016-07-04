@@ -64,7 +64,7 @@ public class RequestHandler extends Thread {
 
 			log.debug("Content-Length : {}", headers.get("Content-Length"));
 
-			if (url.startsWith("/user/create")) {
+			if (url.startsWith("/user/create/")) {
 
 				String requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
 				log.debug("Request Body {}", requestBody);
