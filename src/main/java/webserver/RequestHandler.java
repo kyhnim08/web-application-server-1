@@ -95,7 +95,7 @@ public class RequestHandler extends Thread {
 					DataOutputStream dos = new DataOutputStream(out);
 					response302HeaderWithCookie(dos, "logined=true");
 				} else {
-					log.debug("Password Mismathch   ");
+					log.debug("Password Mismathch");
 					DataOutputStream dos = new DataOutputStream(out);
 					response302Header(dos);
 				}
